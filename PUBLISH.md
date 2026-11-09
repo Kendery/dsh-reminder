@@ -68,3 +68,14 @@ dsh plugin --profile desktop update dsh-jiri@latest
 - 发布 **72 小时后不可撤回**，包名基本永久占用。
 - 令牌等同密码：不要提交进 git，不要贴到聊天里，泄露立刻在 npmjs.com 撤销。
 - 国内直连 `registry.npmjs.org` 可能不稳；发布必须用官方源，镜像只能用于安装。
+
+## 常见报错
+
+| 报错 | 原因 | 处理 |
+|---|---|---|
+| `401 Unauthorized`（`/-/whoami` 也 401） | 令牌无效或复制不完整 | 重新生成，用 Copy 按钮 |
+| `404 Not Found - PUT` | 令牌无效时 npm 的伪装响应 | 同上，先验证 whoami |
+| **`E_STAGE_REQUIRED`** | granular 令牌只能发到暂存区，新包必须由“可直接发布”的令牌创建 | 改用 **Classic Token → Automation**，或 `npm publish --otp=xxxxxx` |
+| `EOTP` | 令牌未勾 bypass 2FA | 重生成令牌，或改用动态码发布 |
+| `EPUBLISHCONFLICT` | 该版本已存在 | 升版本后重发 |
+| `E403`（非 stage 提示） | 权限不足或包名被占 | 检查令牌权限/包名 |
