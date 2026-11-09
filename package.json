@@ -1,6 +1,6 @@
 {
   "name": "@sunr/dsh-reminder",
-  "version": "0.14.0",
+  "version": "0.14.1",
   "description": "记日：农历纪念日、倒数与重复待办的 DeepSeek Harness 插件",
   "keywords": [
     "deepseek-harness",
@@ -28,7 +28,7 @@
   ],
   "engines": {
     "node": "^22.19.0 || >=24.0.0",
-    "dsh": ">=0.2.2-rc.1"
+    "dsh": ">=0.2.0-rc.2"
   },
   "dependencies": {
     "astronomy-engine": "^2.1.19",
