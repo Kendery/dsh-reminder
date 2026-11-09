@@ -1,6 +1,6 @@
 {
   "name": "@sunr/dsh-reminder",
-  "version": "0.14.2",
+  "version": "0.14.3",
   "description": "记日：农历纪念日、倒数与重复待办的 DeepSeek Harness 插件",
   "keywords": [
     "deepseek-harness",
@@ -12,6 +12,14 @@
     "almanac"
   ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kendery/dsh-reminder.git"
+  },
+  "homepage": "https://github.com/Kendery/dsh-reminder#readme",
+  "bugs": {
+    "url": "https://github.com/Kendery/dsh-reminder/issues"
+  },
   "type": "module",
   "main": "src/index.js",
   "exports": {
