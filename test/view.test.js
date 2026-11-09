@@ -54,3 +54,10 @@ test('buildRows：仍然是一条记录一行，日期取下一次', () => {
   assert.equal(rent.date, '2026-11-10')
   assert.equal(rent.inDays, 3)
 })
+
+test('buildRows：每行带星期（0=周日）', () => {
+  const rows = buildRows([{ ...once, date: '2026-11-10' }], TODAY)
+  assert.equal(rows[0].weekday, 2) // 2026-11-10 是周二
+  const sunday = buildRows([{ ...once, date: '2026-11-08' }], TODAY)
+  assert.equal(sunday[0].weekday, 0)
+})

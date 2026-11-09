@@ -842,6 +842,7 @@ window.__ModuleLoader__.load({
               h('thead', { key: 'head' }, h('tr', null, [
                 h('th', { key: 'w', style: styles.th }, '单双周'),
                 h('th', { key: 'd', style: styles.th }, '日期'),
+                h('th', { key: 'wd', style: styles.th }, '星期'),
                 compact ? null : h('th', { key: 'i', style: styles.th }, '距今'),
                 h('th', { key: 't', style: styles.th }, '事项'),
                 h('th', { key: 'a', style: Object.assign({}, styles.th, { textAlign: 'right' }) }, ''),
@@ -851,6 +852,7 @@ window.__ModuleLoader__.load({
                 return h('tr', { key: row.id, style: row.doneNow ? styles.doneRow : undefined }, [
                   h('td', { key: 'w', style: Object.assign({}, styles.td, { color: MUTED, fontSize: 12 }) }, weekLabel(row.weekNo || 1)),
                   h('td', { key: 'd', style: Object.assign({}, styles.td, tone || {}) }, row.date),
+                  h('td', { key: 'wd', style: Object.assign({}, styles.td, { color: MUTED, fontSize: 12 }) }, '周' + WEEKDAYS[row.weekday || 0]),
                   compact ? null : h('td', { key: 'i', style: Object.assign({}, styles.td, tone || {}) }, when(row)),
                   h('td', { key: 't', style: styles.td }, [
                     h('span', { key: 'c', style: Object.assign({}, styles.colorBar, { background: colorOf(row.id) }) }),

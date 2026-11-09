@@ -5,7 +5,7 @@
  * 两个视图共用同一个 rowOf，保证编辑表单拿到的字段一致。
  */
 
-import { nextOccurrence, matchesItem, isoWeekOf } from './repeat.js'
+import { nextOccurrence, matchesItem, isoWeekOf, weekdayOf } from './repeat.js'
 import { almanacOf } from './almanac.js'
 import { normalizeAdvance } from './service.js'
 import { mercuryRetrogradeRanges, isRetrograde } from './retrograde.js'
@@ -38,6 +38,7 @@ function rowOf(item, iso, todayISO) {
     date: iso,
     anchor: item.date,
     weekNo: isoWeekOf(iso),
+    weekday: weekdayOf(iso),
     inDays: daysBetween(todayISO, iso),
     lunar: lunarLabel(item, iso),
     lunarMonth: item.lunar?.month ?? null,
@@ -91,6 +92,7 @@ export function buildMonth(items, year, month, todayISO) {
       items: hits,
       almanac: almanacOf(iso),
       weekNo: isoWeekOf(iso),
+    weekday: weekdayOf(iso),
       mercuryRetrograde: isRetrograde(iso, retrograde),
     })
   }
