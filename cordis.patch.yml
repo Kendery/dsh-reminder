@@ -1,0 +1,6 @@
+# 开发期 overlay：把本地目录挂进 DSH，不用发布 npm。
+# 用法：dsh web --patch ./cordis.patch.yml
+# 注意：name 必须是绝对路径（loader 以 profile 目录为基准解析模块）。
+- insert:
+    - id: dsh-jiri
+      name: '/Users/rysun/DSHwork/dsh-jiri/src/index.js'
