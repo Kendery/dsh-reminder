@@ -79,3 +79,24 @@ dsh plugin --profile desktop update @sunr/dsh-reminder@latest
 | `EOTP` | 令牌未勾 bypass 2FA | 重生成令牌，或改用动态码发布 |
 | `EPUBLISHCONFLICT` | 该版本已存在 | 升版本后重发 |
 | `E403`（非 stage 提示） | 权限不足或包名被占 | 检查令牌权限/包名 |
+
+## 本机已装便携 Node（用于 npm 命令）
+
+```sh
+export PATH="$HOME/DSHwork/tools/node/bin:$PATH"
+npm --version        # 11.20.0
+```
+
+有了它可以用官方 CLI 做 pnpm 不支持的事：
+
+```sh
+npm stage list @sunr/dsh-reminder          # 查看暂存版本
+npm dist-tag add @sunr/dsh-reminder@0.14.0 latest   # 修正 latest 指向
+npm publish --otp=123456                   # 带 2FA 直接发布
+```
+
+## 首次发布的坑（已踩过）
+
+- `pnpm publish` 报成功、registry 却只有 `0.0.0-stage`：版本其实已上传，只是 `latest` 标签指向占位包。
+  用 `npm dist-tag add <包>@<版本> latest` 修正，或 `npm view <包> dist-tags` 确认。
+- 暂存区占位包 `0.0.0-stage` 会保留，不影响正式版本安装。
