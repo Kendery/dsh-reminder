@@ -1,4 +1,4 @@
-# dsh-jiri（记日）
+# @sunr/dsh-reminder（记日）
 
 > 把「按农历 / 按年 / 按周循环的日子」交给 agent 记住；页面上也能直接改。
 > 领域逻辑移植自 Xcode 项目 **Reminder（记日）**，不是它的打包版。
@@ -47,7 +47,7 @@ jiri_delete(id)         → 已删除，落盘文件回到空列表
 
 ## 数据
 
-`$DSH_HOME/storages/dsh-jiri/items.json`（默认 `~/.dsh/...`），人可以直接打开看。
+`$DSH_HOME/storages/@sunr/dsh-reminder/items.json`（默认 `~/.dsh/...`），人可以直接打开看。
 
 ```jsonc
 {
@@ -120,7 +120,7 @@ ELECTRON_RUN_AS_NODE=1 "/Applications/DeepSeek Harness.app/Contents/MacOS/DeepSe
   pack --pack-destination ~/DSHwork
 
 # 2. 装进目标 profile
-dsh plugin --profile web add ~/DSHwork/dsh-jiri-0.1.2.tgz
+dsh plugin --profile web add ~/DSHwork/@sunr/dsh-reminder-0.1.2.tgz
 ```
 
 桌面版（profile `desktop`）装完需要重启 App 才会生效。
@@ -172,13 +172,13 @@ pnpm `file:` 依赖装出来是指向仓库的软链，落在 "linked" 层，走
 | 提醒时间 | 全局默认时刻 + 每条记录可覆盖；不同时刻各自对应一条定时任务，增删改后自动对齐 |
 | 事件提醒 | 每条记录可设多个提前点（如 `7,1`）和**自己的提醒时刻**（如 20:30），按记录归属的时刻投递 |
 
-数据链路：页面 → `POST /api/dsh-jiri/items`（`action: list|add|update|delete|done`）→ `src/service.js`（与工具共用校验）→ JSON 存储。
+数据链路：页面 → `POST /api/@sunr/dsh-reminder/items`（`action: list|add|update|delete|done`）→ `src/service.js`（与工具共用校验）→ JSON 存储。
 
 ## 每日提醒
 
 页面右上角「每日提醒」开关。打开后插件通过宿主的 `schedule` 服务创建一条每天 09:00 的任务
 （`new_once`：首次投递新建会话，之后复用），投递内容就是让 agent 调 `jiri_brief`。
-关掉会删除该任务；任务 id 记在 `~/.dsh/storages/dsh-jiri/reminder.json`。
+关掉会删除该任务；任务 id 记在 `~/.dsh/storages/@sunr/dsh-reminder/reminder.json`。
 
 ## 导出 / 导入
 

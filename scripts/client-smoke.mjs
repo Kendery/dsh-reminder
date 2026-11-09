@@ -34,8 +34,8 @@ globalThis.window = {
 await import('../src/client.js')
 
 const { id, mod } = globalThis.__clientModule
-assert.equal(id, 'dsh-jiri')
-assert.equal(mod.name, 'dsh-jiri')
+assert.equal(id, '@sunr/dsh-reminder')
+assert.equal(mod.name, 'dsh-reminder')
 assert.deepEqual(mod.inject, ['slots'])
 
 const ctx = {
@@ -49,8 +49,8 @@ mod.apply(ctx)
 assert.equal(registered.length, 2, `应注册 2 个 slot，实际 ${registered.length}`)
 const names = registered.map((entry) => entry.spec.name).sort()
 assert.deepEqual(names, ['main', 'sidebar.panellist'])
-assert.equal(registered.find((e) => e.spec.name === 'main').spec.key, 'dsh-jiri')
-assert.equal(registered.find((e) => e.spec.name === 'sidebar.panellist').spec.id, 'dsh-jiri')
+assert.equal(registered.find((e) => e.spec.name === 'main').spec.key, 'dsh-reminder')
+assert.equal(registered.find((e) => e.spec.name === 'sidebar.panellist').spec.id, 'dsh-reminder')
 for (const entry of registered) assert.equal(typeof entry.component, 'function')
 
 console.log('[client-smoke] 浏览器面加载成功，注册:', registered.map((e) => e.spec.name).join(', '))

@@ -55,7 +55,7 @@ export function toICS(items, { today, timeZone = 'Asia/Shanghai' } = {}) {
   const lines = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//dsh-jiri//记日//CN',
+    'PRODID:-//dsh-reminder//记日//CN',
     'CALSCALE:GREGORIAN',
   ]
 
@@ -65,7 +65,7 @@ export function toICS(items, { today, timeZone = 'Asia/Shanghai' } = {}) {
     const next = new Date(Date.parse(date + 'T00:00:00Z') + 86_400_000).toISOString().slice(0, 10)
     const rule = rruleOf(item)
     lines.push('BEGIN:VEVENT')
-    lines.push(`UID:${item.id}@dsh-jiri`)
+    lines.push(`UID:${item.id}@dsh-reminder`)
     lines.push(`DTSTAMP:${stamp}`)
     lines.push(`DTSTART;VALUE=DATE:${compactDate(date)}`)
     lines.push(`DTEND;VALUE=DATE:${compactDate(next)}`)

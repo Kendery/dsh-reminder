@@ -1,5 +1,5 @@
 # 包自带的 bundle 层：安装后由 profile 的 dsh.profile.bundles 自动应用，
 # 不需要用户再手改 cordis.patch.yml。
 - insert:
-    - id: dsh-jiri
-      name: 'dsh-jiri'
+    - id: dsh-reminder
+      name: '@sunr/dsh-reminder'

@@ -7,17 +7,21 @@
  */
 
 import assert from 'node:assert/strict'
-import { cp, mkdir, mkdtemp, writeFile } from 'node:fs/promises'
+import { cp, mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 
 const root = new URL('..', import.meta.url).pathname
-const dir = await mkdtemp(join(tmpdir(), 'dsh-jiri-smoke-'))
+const dir = await mkdtemp(join(tmpdir(), 'dsh-reminder-smoke-'))
 
 await cp(join(root, 'src'), join(dir, 'src'), { recursive: true })
-// 运行时依赖也要带上，否则临时目录里解析不到 lunar-javascript
-await cp(join(root, 'node_modules', 'lunar-javascript'), join(dir, 'node_modules', 'lunar-javascript'), { recursive: true })
+// 运行时依赖也要带上，否则临时目录里解析不到（按 package.json 的 dependencies 逐个复制）
+const pkg = JSON.parse(await readFile(join(root, 'package.json'), 'utf8'))
+await mkdir(join(dir, 'node_modules'), { recursive: true })
+for (const dependency of Object.keys(pkg.dependencies ?? {})) {
+  await cp(join(root, 'node_modules', dependency), join(dir, 'node_modules', dependency), { recursive: true })
+}
 
 const stubDir = join(dir, 'node_modules', '@deepseek-ai', 'dsh-tools')
 await mkdir(stubDir, { recursive: true })
@@ -28,7 +32,7 @@ await writeFile(
 await writeFile(join(stubDir, 'index.js'), 'export const defineTool = (definition) => definition\n')
 
 const plugin = await import(pathToFileURL(join(dir, 'src', 'index.js')).href)
-assert.equal(plugin.name, 'dsh-jiri', '插件名不对')
+assert.equal(plugin.name, 'dsh-reminder', '插件名不对')
 assert.deepEqual(plugin.inject, ['tools'], 'inject 应只依赖 tools')
 
 const registered = []

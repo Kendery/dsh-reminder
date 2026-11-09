@@ -14,7 +14,7 @@ export const SCHEMA_VERSION = 1
 
 export function defaultStorePath() {
   const home = process.env.DSH_HOME || join(homedir(), '.dsh')
-  return join(home, 'storages', 'dsh-jiri', 'items.json')
+  return join(home, 'storages', 'dsh-reminder', 'items.json')
 }
 
 export function emptyState() {

@@ -25,4 +25,4 @@ echo "== 2/3 干跑 =="
 ELECTRON_RUN_AS_NODE=1 "$NODE" "$PNPM" publish --dry-run --no-git-checks
 
 echo "== 3/3 发布 =="
-ELECTRON_RUN_AS_NODE=1 "$NODE" "$PNPM" publish --no-git-checks "$@"
+ELECTRON_RUN_AS_NODE=1 "$NODE" "$PNPM" publish --no-git-checks --access public "$@"

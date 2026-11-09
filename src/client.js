@@ -6,7 +6,7 @@
  * 只有 react / react-dom / ui-primitives 是平台外置的，这里只用到 react。
  */
 window.__ModuleLoader__.load({
-  id: 'dsh-jiri',
+  id: '@sunr/dsh-reminder',
   factory: (require) => {
     var module = { exports: {} }
     var exports = module.exports
@@ -14,7 +14,7 @@ window.__ModuleLoader__.load({
     const React = require('react')
     const h = React.createElement
 
-    const ROUTE = '/api/dsh-jiri/items'
+    const ROUTE = '/api/dsh-reminder/items'
     const ACCENT = 'var(--dsw-accent, #4f6ef7)'
     const BORDER = 'var(--dsw-border, rgba(127,127,127,.25))'
     const MUTED = 'var(--dsw-text-secondary, #888)'
@@ -501,7 +501,7 @@ window.__ModuleLoader__.load({
         this.state = { error: null }
       }
       static getDerivedStateFromError(error) { return { error } }
-      componentDidCatch(error) { console.error('[dsh-jiri] render failed', error) }
+      componentDidCatch(error) { console.error('[dsh-reminder] render failed', error) }
       render() {
         if (this.state.error) {
           return h('div', { style: { padding: 24, fontSize: 13, color: '#e5484d', whiteSpace: 'pre-wrap' } },
@@ -532,13 +532,13 @@ window.__ModuleLoader__.load({
       const formRef = React.useRef(null)
       const fileRef = React.useRef(null)
       const [listHidden, setListHidden] = React.useState(function () {
-        try { return window.localStorage.getItem('dsh-jiri:list-hidden') === '1' } catch (error) { return false }
+        try { return window.localStorage.getItem('dsh-reminder:list-hidden') === '1' } catch (error) { return false }
       })
 
       function toggleList() {
         setListHidden(function (prev) {
           const next = !prev
-          try { window.localStorage.setItem('dsh-jiri:list-hidden', next ? '1' : '0') } catch (error) { /* 忽略 */ }
+          try { window.localStorage.setItem('dsh-reminder:list-hidden', next ? '1' : '0') } catch (error) { /* 忽略 */ }
           return next
         })
       }
@@ -962,13 +962,13 @@ window.__ModuleLoader__.load({
     }
 
     module.exports = {
-      name: 'dsh-jiri',
+      name: 'dsh-reminder',
       inject: ['slots'],
       apply(ctx) {
-        ctx.slots.inject('main', () => ctx.slots.register({ name: 'main', key: 'dsh-jiri' }, PageBoundary))
+        ctx.slots.inject('main', () => ctx.slots.register({ name: 'main', key: 'dsh-reminder' }, PageBoundary))
         ctx.slots.inject('sidebar.panellist', () => ctx.slots.register({
           name: 'sidebar.panellist',
-          id: 'dsh-jiri',
+          id: 'dsh-reminder',
           order: 60,
           label: () => '记日',
         }, CalendarIcon))

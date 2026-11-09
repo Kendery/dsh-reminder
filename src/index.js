@@ -10,7 +10,8 @@
 
 import { defineTool } from '@deepseek-ai/dsh-tools'
 import { mkdir, readFile, unlink, writeFile } from 'node:fs/promises'
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync, renameSync } from 'node:fs'
+import { homedir } from 'node:os'
 import { dirname, join } from 'node:path'
 
 import { buildTools } from './tools.js'
@@ -21,9 +22,9 @@ import { toJSON, toMarkdown, toICS, parseImport, EXPORT_FORMATS } from './export
 import { LUNAR_DEFAULT_TIME_ZONE, toISODate } from './lunar.js'
 import { normalizeTime, collectTimes } from './remind.js'
 
-export const name = 'dsh-jiri'
+export const name = 'dsh-reminder'
 export const inject = ['tools']
-export const ITEMS_ROUTE = '/api/dsh-jiri/items'
+export const ITEMS_ROUTE = '/api/dsh-reminder/items'
 
 const REMINDER_TITLE = '记日 · 每日简报'
 const reminderPrompt = (time) => `调用 jiri_reminders，time 传 "${time}"。若 hasReminders 为 false，只回复「今天没有提醒」，不要展开；否则按返回的清单原样汇报，不要额外补充建议。`
@@ -31,6 +32,13 @@ const reminderPrompt = (time) => `调用 jiri_reminders，time 传 "${time}"。�
 
 export function apply(ctx, config = {}) {
   const file = config.file ?? defaultStorePath()
+
+  // 包名从 dsh-jiri 改成 @sunr/dsh-reminder：数据目录跟着改，首次加载自动迁移
+  const currentDir = dirname(file)
+  const legacyDir = join(process.env.DSH_HOME || join(homedir(), '.dsh'), 'storages', 'dsh-jiri')
+  if (!existsSync(currentDir) && existsSync(legacyDir)) {
+    try { renameSync(legacyDir, currentDir) } catch { /* 迁移失败就沿用空目录 */ }
+  }
   const reminderFile = join(dirname(file), 'reminder.json')
   const settingsFile = join(dirname(file), 'settings.json')
   const store = createStore(file)
@@ -275,7 +283,7 @@ export function apply(ctx, config = {}) {
               return json({ ok: false, error: { code: 'bad-action', message: `未知动作：${action}` } }, 400)
           }
         } catch (error) {
-          return json({ ok: false, error: { code: 'dsh-jiri', message: String(error?.message ?? error) } }, 400)
+          return json({ ok: false, error: { code: 'dsh-reminder', message: String(error?.message ?? error) } }, 400)
         }
 
         if (['add', 'update', 'delete', 'done', 'undone', 'restore'].includes(action)) {
@@ -283,6 +291,6 @@ export function apply(ctx, config = {}) {
         }
         return json({ ok: true, today: today(), rows: buildRows(await store.list(), today()), ...extra })
       },
-    }, 'dsh-jiri: items'), 'dsh-jiri: items route')
+    }, 'dsh-reminder: items'), 'dsh-reminder: items route')
   })
 }
