@@ -100,3 +100,14 @@ npm publish --otp=123456                   # 带 2FA 直接发布
 - `pnpm publish` 报成功、registry 却只有 `0.0.0-stage`：版本其实已上传，只是 `latest` 标签指向占位包。
   用 `npm dist-tag add <包>@<版本> latest` 修正，或 `npm view <包> dist-tags` 确认。
 - 暂存区占位包 `0.0.0-stage` 会保留，不影响正式版本安装。
+
+## 升级的坑：`dsh plugin update` 不会真的升版本
+
+实测 `dsh plugin --profile desktop update @sunr/dsh-reminder@latest` 跑完，安装版本仍是旧的。
+要真正升级，把新版本号写进去：
+
+```sh
+dsh plugin --profile desktop add "@sunr/dsh-reminder@^0.15.0"
+```
+
+（或直接 `add @sunr/dsh-reminder@latest`，会写成一个精确版本范围。）
